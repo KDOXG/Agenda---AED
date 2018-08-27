@@ -12,7 +12,7 @@ void reOrganizar();
 
 void incluirPessoa()
 {
-	*b=malloc()
+	
 }
 
 void apagarPessoa()
