@@ -3,8 +3,13 @@
 #include <string.h>
 #include <ctype.h>
 
-void *pBuffer=malloc(1);
+typedef struct Pessoa
+{
+    char nome, end[2];
+}P;
 
+void *pBuffer;
+/*
 void reOrganizar();
 {
 //tô vendo que vou tomar muito na jabiraca com isso aqui p_p
@@ -12,7 +17,7 @@ void reOrganizar();
 
 void incluirPessoa()
 {
-	
+
 }
 
 void apagarPessoa()
@@ -34,14 +39,24 @@ void Sair()
 {
 
 }
-
+*/
 void main()
 {
+    int a=0;
+    P b; //Nas linhas seguintes estarei realizando alguns testes de memória.
+    strcat(b.end,"\0");
+    a=sizeof(P);
+    printf("%d\n", a);
+    a=sizeof(int);
+    printf("%d\n", a);
+    printf("Aqui:%c\n", b.end);
+    printf("E aqui:%s", b.end);
 /*
 	int *p, *q, *i, *j, *k, *l, *v, *w;
 	char *a, **b, *c, *d, *e;
-	*/
+
 	scanf("%d", p);
+
 	switch (*p)
 	{
 		case 1:
@@ -59,6 +74,8 @@ void main()
 		case 5:
 			Sair();
 		break;
-	return;
 	}
+*/
+	return;
+
 }
