@@ -5,7 +5,7 @@
 
 typedef struct Pessoa
 {
-    char nome, end[2];
+    char *nome, end[2];
 }P;
 
 void *pBuffer;
@@ -13,13 +13,17 @@ void *pBuffer;
 void reOrganizar();
 {
 //tô vendo que vou tomar muito na jabiraca com isso aqui p_p
+//update: ja tô tomando.
 }
-
+*/
 void incluirPessoa()
 {
-
+    P *q;
+    q->nome=(char*)pBuffer+4;
+    scanf("%s", q->nome);
+    printf("%s\n", q->nome);
 }
-
+/*
 void apagarPessoa()
 {
 
@@ -42,26 +46,21 @@ void Sair()
 */
 void main()
 {
-    int a=0;
-    P b; //Nas linhas seguintes estarei realizando alguns testes de memória.
-    strcat(b.end,"\0");
-    a=sizeof(P);
-    printf("%d\n", a);
-    a=sizeof(int);
-    printf("%d\n", a);
-    printf("Aqui:%c\n", b.end);
-    printf("E aqui:%s", b.end);
-/*
 	int *p, *q, *i, *j, *k, *l, *v, *w;
 	char *a, **b, *c, *d, *e;
 
+    pBuffer=malloc(sizeof(int));
+    p=pBuffer;
+    realloc(pBuffer,sizeof(char)*34);
+
+	printf("Digite sua escolha...");
 	scanf("%d", p);
 
 	switch (*p)
 	{
 		case 1:
 			incluirPessoa();
-		break;
+		break;/*
 		case 2:
 			apagarPessoa();
 		break;
@@ -73,9 +72,9 @@ void main()
 		break;
 		case 5:
 			Sair();
-		break;
+		break;*/
 	}
-*/
+
 	return;
 
 }
