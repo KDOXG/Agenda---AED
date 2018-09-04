@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-
+/*
 typedef struct Pessoa
 {
     char *nome, end[2];
 }P;
-
+*/ //Decidir se uso algo a mais além do nome.
 void *pBuffer;
 /*
 void reOrganizar();
@@ -25,10 +25,18 @@ void incluirPessoa()
 }
 */
 {
-    char *c;
-    c=(char *)pBuffer;
+    char *c, *s=(char*)pBuffer;
+    //c=(char *)pBuffer;
+    c=malloc(30*sizeof(char));
     scanf("%s", c);
+    escreverNome(c,s);
     printf("%s\n", (char *)pBuffer);
+}
+
+char* incluirPessoa(char *c, char *s)
+{
+	char *aux;
+	aux=malloc(strlen(c)*sizeof(char));
 }
 /*
 void apagarPessoa()
