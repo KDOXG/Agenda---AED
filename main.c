@@ -17,11 +17,18 @@ void reOrganizar();
 }
 */
 void incluirPessoa()
-{
+/*{
     P *q;
-    q->nome=(char*)pBuffer+4;
+    q=(P *)pBuffer;
     scanf("%s", q->nome);
     printf("%s\n", q->nome);
+}
+*/
+{
+    char *c;
+    c=(char *)pBuffer;
+    scanf("%s", c);
+    printf("%s\n", (char *)pBuffer);
 }
 /*
 void apagarPessoa()
@@ -46,12 +53,12 @@ void Sair()
 */
 void main()
 {
-	int *p, *q, *i, *j, *k, *l, *v, *w;
-	char *a, **b, *c, *d, *e;
+	int *p;//, *q, *i, *j, *k, *l, *v, *w;
+	//char *a, **b, *c, *d, *e;
 
-    pBuffer=malloc(sizeof(int));
+    pBuffer=malloc(sizeof(int)+sizeof(char)*30);
     p=pBuffer;
-    realloc(pBuffer,sizeof(char)*34);
+//    pBuffer=realloc(pBuffer,sizeof(char)*34);
 
 	printf("Digite sua escolha...");
 	scanf("%d", p);
