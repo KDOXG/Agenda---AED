@@ -37,7 +37,7 @@ char* incluirPessoa(char *c, char *s)
 {
 	char *aux;
 	aux=malloc(strlen(c)*sizeof(char));
-}
+} //Terminar função
 /*
 void apagarPessoa()
 {
