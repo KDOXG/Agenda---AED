@@ -25,19 +25,21 @@ void incluirPessoa()
 }
 */
 {
-    char *c, *s=(char*)pBuffer;
+    char *c=(char*)pBuffer;//, *s;//=(char*)pBuffer;
     //c=(char *)pBuffer;
     c=malloc(30*sizeof(char));
     scanf("%s", c);
-    escreverNome(c,s);
+    //s=escreverNome(c);
+	realloc(c,strlen(c)*sizeof(char));
     printf("%s\n", (char *)pBuffer);
+	printf("%s\t%d\n", c, strlen(c));
 }
-
-char* incluirPessoa(char *c, char *s)
+/*
+char * escreverNome(char *c)
 {
-	char *aux;
-	aux=malloc(strlen(c)*sizeof(char));
-} //Terminar função
+	realloc(pBuffer,strlen(c)*sizeof(char));
+	return (char*)pBuffer;
+} //Terminar função*/
 /*
 void apagarPessoa()
 {
@@ -64,11 +66,11 @@ void main()
 	int *p;//, *q, *i, *j, *k, *l, *v, *w;
 	//char *a, **b, *c, *d, *e;
 
-    pBuffer=malloc(sizeof(int)+sizeof(char)*30);
+    pBuffer=malloc(sizeof(char)*30);
     p=pBuffer;
 //    pBuffer=realloc(pBuffer,sizeof(char)*34);
 
-	printf("Digite sua escolha...");
+	printf("Digite sua escolha... ");
 	scanf("%d", p);
 
 	switch (*p)
