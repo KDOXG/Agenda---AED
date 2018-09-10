@@ -25,12 +25,12 @@ void incluirPessoa()
 }
 */
 {
-    char *c=(char*)pBuffer;//, *s;//=(char*)pBuffer;
+    char *c=(char*)pBuffer+sizeof(int)*3-1;//, *s;//=(char*)pBuffer;
     //c=(char *)pBuffer;
-    c=malloc(30*sizeof(char));
+	printf("Digite o nome...\n");
     scanf("%s", c);
     //s=escreverNome(c);
-	realloc(c,strlen(c)*sizeof(char));
+	realloc(c,strlen(c)*sizeof(char)); /*O que precisa realocar não é o c, e sim o pBuffer*/
     printf("%s\n", (char *)pBuffer);
 	printf("%s\t%d\n", c, strlen(c));
 }
@@ -66,8 +66,9 @@ void main()
 	int *p;//, *q, *i, *j, *k, *l, *v, *w;
 	//char *a, **b, *c, *d, *e;
 
-    pBuffer=malloc(sizeof(char)*30);
-    p=pBuffer;
+    pBuffer=malloc(sizeof(int)*3);
+    p=pBuffer+0;
+	printf("%p\n%p\n%p\n%p\n%p\n", p, pBuffer+sizeof(int)*3, pBuffer+1, pBuffer+2, pBuffer+3);
 //    pBuffer=realloc(pBuffer,sizeof(char)*34);
 
 	printf("Digite sua escolha... ");
