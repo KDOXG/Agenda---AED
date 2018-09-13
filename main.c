@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+/*Não pretendo mexer na agenda por um tempo
+*Ou seja, ela não será atualizada.
+*/
+
+
 /*
 typedef struct Pessoa
 {
