@@ -2,49 +2,44 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-/*Não pretendo mexer na agenda por um tempo
-*Ou seja, ela não será atualizada.
-*/
 
-
-/*
-typedef struct Pessoa
+//------------------------------Variáveis e Tipos
+typedef struct P
 {
-    char *nome, end[2];
-}P;
-*/ //Decidir se uso algo a mais além do nome.
+	int identidade;
+    char nome[30];
+}Pessoa;
+
 void *pBuffer;
-/*
-void reOrganizar();
+
+//------------------------------Funções
+void Organizar(int **p, int **q, int **r, int **escolha)
 {
-//tô vendo que vou tomar muito na jabiraca com isso aqui p_p
-//update: ja tô tomando.
+	*p=pBuffer+0;
+	*q=pBuffer+sizeof(int);
+	*r=pBuffer+2*sizeof(int);
+	*escolha=pBuffer+3*sizeof(int);
 }
-*/
+
 void incluirPessoa()
-/*{
-    P *q;
-    q=(P *)pBuffer;
-    scanf("%s", q->nome);
-    printf("%s\n", q->nome);
-}
-*/
 {
-    char *c=(char*)pBuffer+sizeof(int)*3-1;//, *s;//=(char*)pBuffer;
-    //c=(char *)pBuffer;
-	printf("Digite o nome...\n");
-    scanf("%s", c);
-    //s=escreverNome(c);
-	realloc(c,strlen(c)*sizeof(char)); /*O que precisa realocar não é o c, e sim o pBuffer*/
-    printf("%s\n", (char *)pBuffer);
-	printf("%s\t%d\n", c, strlen(c));
+    int *p=pBuffer+0, *q=pBuffer+sizeof(int), *r=pBuffer+2*sizeof(int);
+    Pessoa *pessoa=pBuffer+sizeof(int)*4;
+    pessoa=pessoa+*r;
+
+	printf("Digite o nome: ");
+	scanf("%s", pessoa->nome);
+    //fgets(pessoa->nome, 30, stdin);
+	pessoa->identidade=(int)*pessoa->nome;
+	//printf("Digite a identidade: ");
+	//scanf("%d", &pessoa->identidade);
+
+    *r=*r+1;
+    *q=(*r+1)*sizeof(Pessoa)+4*sizeof(int);
+    pBuffer=realloc(pBuffer,*q);
 }
-/*
-char * escreverNome(char *c)
-{
-	realloc(pBuffer,strlen(c)*sizeof(char));
-	return (char*)pBuffer;
-} //Terminar função*/
+
+
 /*
 void apagarPessoa()
 {
@@ -55,49 +50,69 @@ void buscarPessoa()
 {
 
 }
-
+*/
 void listarPessoa()
 {
-
+	int *i=pBuffer+3*sizeof(int), *r=pBuffer+2*sizeof(int);
+	Pessoa *pessoa=pBuffer+4*sizeof(int);
+	for (*i=0; *i<=*r; *i=*i+1)
+	{
+		pessoa=pBuffer+4*sizeof(int);
+		if (*i == *r)
+			break;
+		else
+		{
+			pessoa=pessoa+*i;
+			printf("%s\n", pessoa->nome);
+			printf("C�digo de identifica��o: %d\n", pessoa->identidade);
+		}
+	}
 }
-
+/*
 void Sair()
 {
 
 }
 */
+//------------------------------Main
 void main()
 {
-	int *p;//, *q, *i, *j, *k, *l, *v, *w;
+	printf("Bem-vindo à Agenda de KDOXG. \nCarregando...");
+	int *p, *q, *r, *escolha;//, *j, *k, *l, *v, *w;
 	//char *a, **b, *c, *d, *e;
+    pBuffer=malloc(sizeof(int)*4+sizeof(Pessoa));
+	Organizar(&p,&q,&r,&escolha);
+	*p=0;
+	*q=0;
+	*r=0;
+	
+	Inicio: Organizar(&p,&q,&r,&escolha);
+	printf("\n------------------------------");
+	printf("\n\nDigite sua escolha...\n1 para incluir...\n2 para excluir...\n3 para buscar...\n4 para listar...\n5 para sair...\nCaso escolha outro valor, esta mensagem se repetirá.\n\nDigite: ");
+	scanf("%d", escolha);
 
-    pBuffer=malloc(sizeof(int)*3);
-    p=pBuffer+0;
-	printf("%p\n%p\n%p\n%p\n%p\n", p, pBuffer+sizeof(int)*3, pBuffer+1, pBuffer+2, pBuffer+3);
-//    pBuffer=realloc(pBuffer,sizeof(char)*34);
-
-	printf("Digite sua escolha... ");
-	scanf("%d", p);
-
-	switch (*p)
+	switch (*escolha)
 	{
 		case 1:
 			incluirPessoa();
+			printf("Pessoa incluída!\n");
+			goto Inicio;
 		break;/*
 		case 2:
 			apagarPessoa();
-		break;
+		break;/*
 		case 3:
 			buscarPessoa();
-		break;
+		break;*/
 		case 4:
 			listarPessoa();
-		break;
+			printf("Total de pessoas: %d", *r);
+			goto Inicio;
+		break;/*
 		case 5:
 			Sair();
 		break;*/
+		default:
+			goto Inicio;
 	}
-
-	return;
-
 }
