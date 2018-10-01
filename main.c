@@ -3,7 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 
-//------------------------------VariÃ¡veis e Tipos
+//------------------------------Variáveis e Tipos
 typedef struct P
 {
 	int identidade;
@@ -12,7 +12,7 @@ typedef struct P
 
 void *pBuffer;
 
-//------------------------------FunÃ§Ãµes
+//------------------------------Funções
 void Organizar(int **p, int **q, int **r, int **escolha)
 {
 	*p=pBuffer+0;
@@ -23,7 +23,7 @@ void Organizar(int **p, int **q, int **r, int **escolha)
 
 void incluirPessoa()
 {
-    int *p=pBuffer+0, *q=pBuffer+sizeof(int), *r=pBuffer+2*sizeof(int);
+    int /**p=pBuffer+0, */*q=pBuffer+sizeof(int), *r=pBuffer+2*sizeof(int);
     Pessoa *pessoa=pBuffer+sizeof(int)*4;
     pessoa=pessoa+*r;
 
@@ -68,16 +68,18 @@ void listarPessoa()
 		}
 	}
 }
-/*
+
 void Sair()
 {
-
+	free(pBuffer);
+	printf("\nObrigado! Um dia esta agenda irá salvar todos os nomes em um arquivo. Volte sempre!");
+	exit(1);
 }
-*/
+
 //------------------------------Main
 void main()
 {
-	printf("Bem-vindo Ã  Agenda de KDOXG. \nCarregando...");
+	printf("Bem-vindo a Agenda de KDOXG. \nCarregando...");
 	int *p, *q, *r, *escolha;//, *j, *k, *l, *v, *w;
 	//char *a, **b, *c, *d, *e;
     pBuffer=malloc(sizeof(int)*4+sizeof(Pessoa));
@@ -86,17 +88,19 @@ void main()
 	*q=0;
 	*r=0;
 	
-	Inicio: Organizar(&p,&q,&r,&escolha);
 	printf("\n------------------------------");
-	printf("\n\nDigite sua escolha...\n1 para incluir...\n2 para excluir...\n3 para buscar...\n4 para listar...\n5 para sair...\nCaso escolha outro valor, esta mensagem se repetirÃ¡.\n\nDigite: ");
+	printf("\n\nDigite sua escolha...\n1 para incluir...\n2 para excluir...\n3 para buscar...\n4 para listar...\n5 para sair...\nCaso escolha outro valor, esta mensagem se repetirá.");
+	Inicio: Organizar(&p,&q,&r,&escolha);
+	printf("\n\nDigite: ");
 	scanf("%d", escolha);
 
 	switch (*escolha)
 	{
 		case 1:
 			incluirPessoa();
-			printf("Pessoa incluÃ­da!\n");
+			printf("Pessoa incluída! Use o 'Listar' para ver seu código de identificação.\n");
 			goto Inicio;
+			printf("");
 		break;/*
 		case 2:
 			apagarPessoa();
@@ -108,11 +112,13 @@ void main()
 			listarPessoa();
 			printf("Total de pessoas: %d", *r);
 			goto Inicio;
-		break;/*
+			printf("");
+		break;
 		case 5:
 			Sair();
-		break;*/
+		break;
 		default:
 			goto Inicio;
+			printf("");
 	}
 }
