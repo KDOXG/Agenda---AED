@@ -16,8 +16,8 @@
 //------------------------------Variáveis e Tipos
 typedef struct P
 {
+	char nome[30];
 	int identidade;
-    char nome[30];
 }Pessoa;
 
 void *pBuffer;
@@ -36,12 +36,12 @@ void InsertionSort()
 {
     int *tmp=pBuffer+0*sizeof(int),*i=pBuffer+3*sizeof(int),*j=pBuffer+4*sizeof(int), *n=pBuffer+2*sizeof(int);
     Pessoa *pessoa=pBuffer+5*sizeof(int);
-	char *aux=(char*)pessoa+*n;
+	Pessoa *aux=pessoa+*n;
 
     for (*j=1; *j<*n; *j=*j+1)
     {
         *i=*j-1;
-        strcpy(aux,(pessoa+*j)->nome);
+        strcpy(aux->nome,(pessoa+*j)->nome);
         *tmp=(pessoa+*j)->identidade;
         while ((*i>=0) && (*tmp < (pessoa+*i)->identidade))
         {
@@ -49,7 +49,7 @@ void InsertionSort()
             (pessoa+*i+1)->identidade = (pessoa+*i)->identidade;
             *i=*i-1;
         }
-        strcpy((pessoa+*i+1)->nome,aux);
+        strcpy((pessoa+*i+1)->nome,aux->nome);
     (pessoa+*i+1)->identidade = *tmp;
     }
 }
@@ -78,19 +78,20 @@ void apagarPessoa()
 {
 	int *aux=pBuffer+0, *i=pBuffer+3*sizeof(int), *r=pBuffer+2*sizeof(int);
 	Pessoa *pessoa=pBuffer+5;
-	char *alguem=(char*)pessoa+*r;
+	Pessoa *alguem=pessoa+*r;
 	printf("Digite o nome: ");
 	getchar();
-	fgets(alguem, 30, stdin);
-	for (*i=0; *i<=*r; (*i)++)
+	fgets(alguem->nome, 30, stdin);
+	for (*i=0; *i<=*r; *i=*i+1)
 	{
 		if (*i == *r)
 			printf("Não há ninguém com este nome.\n");
 		else
-			if (strcmp(alguem,(pessoa+*i)->nome) == 0)	//Aparentemente o problema está neste strcmp
+			if (strcmp(alguem->nome,(pessoa+*i)->nome) == 0)	//Aparentemente o problema está neste strcmp
 			{
 				pessoa->identidade=999;
 				InsertionSort();	//inserir aquele algoritmo que é mais rápido para chamadas já quase ordenadas
+				printf("Excluído com sucesso!\n");
 				*r=*r-1;
 				return;
 			}
@@ -151,8 +152,6 @@ void main()
 			Organizar(&p,&q,&r,&s,&t);
 			if (*r > 1)
 				InsertionSort();	//inserir aquele algoritmo que é mais rápido para chamadas já quase ordenadas
-			else
-				InsertionSort();
 			printf("Pessoa incluída! Use o 'Listar' para ver seu código de identificação.\n");
 			goto Inicio;
 			printf("");
@@ -161,7 +160,6 @@ void main()
 			apagarPessoa();
     		*q=(*r+1)*sizeof(Pessoa)+5*sizeof(int);
     		pBuffer=realloc(pBuffer,*q);
-			printf("Excluído com sucesso!\n");
 			goto Inicio;
 			printf("");
 		break;/*
