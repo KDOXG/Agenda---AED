@@ -58,7 +58,7 @@ void InsertionSort()
 //------------------------------Métodos
 void incluirPessoa()
 {
-    int /**p=pBuffer+0, */*q=pBuffer+sizeof(int), *r=pBuffer+2*sizeof(int);
+    int *q=pBuffer+sizeof(int), *r=pBuffer+2*sizeof(int);
     Pessoa *pessoa=pBuffer+sizeof(int)*5;
     pessoa=pessoa+*r;
 
@@ -66,8 +66,6 @@ void incluirPessoa()
 	getchar();
     fgets(pessoa->nome, 30, stdin);
 	pessoa->identidade=(int)*pessoa->nome;
-	//printf("Digite a identidade: ");
-	//scanf("%d", &pessoa->identidade);
 
     *r=*r+1;
     *q=(*r+1)*sizeof(Pessoa)+5*sizeof(int);
@@ -76,18 +74,21 @@ void incluirPessoa()
 
 void apagarPessoa()
 {
-	int *aux=pBuffer+0, *i=pBuffer+3*sizeof(int), *r=pBuffer+2*sizeof(int);
+	int *i=pBuffer+3*sizeof(int), *r=pBuffer+2*sizeof(int);
 	Pessoa *pessoa=pBuffer+5;
 	Pessoa *alguem=pessoa+*r;
 	printf("Digite o nome: ");
 	getchar();
 	fgets(alguem->nome, 30, stdin);
-	for (*i=0; *i<=*r; *i=*i+1)
+	for (*i=0; *i<=*r; (*i)++)
 	{
+		pessoa=pBuffer+5*sizeof(int);
 		if (*i == *r)
 			printf("Não há ninguém com este nome.\n");
 		else
-			if (strcmp(alguem->nome,(pessoa+*i)->nome) == 0)	//Aparentemente o problema está neste strcmp
+        {
+			pessoa=pessoa+*i;
+			if (strcmp(alguem->nome,pessoa->nome) == 0)
 			{
 				pessoa->identidade=999;
 				InsertionSort();	//inserir aquele algoritmo que é mais rápido para chamadas já quase ordenadas
@@ -95,14 +96,36 @@ void apagarPessoa()
 				*r=*r-1;
 				return;
 			}
+        }
 	}
 }
-/*
+
 void buscarPessoa()
 {
-
+	int *i=pBuffer+3*sizeof(int), *r=pBuffer+2*sizeof(int);
+	Pessoa *pessoa=pBuffer+5;
+	Pessoa *alguem=pessoa+*r;
+	printf("Digite o nome: ");
+	getchar();
+	fgets(alguem->nome, 30, stdin);
+	for (*i=0; *i<=*r; (*i)++)
+	{
+		pessoa=pBuffer+5*sizeof(int);
+		if (*i == *r)
+			printf("Não há ninguém com este nome.\n");
+		else
+        {
+            pessoa=pessoa+*i;
+			if (strcmp(alguem->nome,pessoa->nome) == 0)
+			{
+                printf("%s", pessoa->nome);
+                printf("Código de identificação: %d\n", pessoa->identidade);
+				return;
+			}
+        }
+	}
 }
-*/
+
 void listarPessoa()
 {
 	int *i=pBuffer+3*sizeof(int), *r=pBuffer+2*sizeof(int);
@@ -131,8 +154,7 @@ void Sair()
 void main()
 {
 	printf("Bem-vindo a Agenda de KDOXG. \nCarregando...");
-	int *p, *q, *r, *s, *t;//, *j, *k, *l, *v, *w;
-	//char *a, **b, *c, *d, *e;
+	int *p, *q, *r, *s, *t;
     pBuffer=malloc(sizeof(int)*5+sizeof(Pessoa));
 	Organizar(&p,&q,&r,&s,&t);
 	*p=0;
@@ -152,32 +174,35 @@ void main()
 			Organizar(&p,&q,&r,&s,&t);
 			if (*r > 1)
 				InsertionSort();	//inserir aquele algoritmo que é mais rápido para chamadas já quase ordenadas
-			printf("Pessoa incluída! Use o 'Listar' para ver seu código de identificação.\n");
+			printf("Pessoa incluída! Use o 'Buscar' para ver seu código de identificação.\n");
 			goto Inicio;
-			printf("");
+			pBuffer=pBuffer;
 		break;
 		case 2:
 			apagarPessoa();
     		*q=(*r+1)*sizeof(Pessoa)+5*sizeof(int);
     		pBuffer=realloc(pBuffer,*q);
 			goto Inicio;
-			printf("");
-		break;/*
+			pBuffer=pBuffer;
+		break;
 		case 3:
 			buscarPessoa();
-		break;*/
+			goto Inicio;
+			pBuffer=pBuffer;
+		break;
+			pessoa=pessoa+*i;
 		case 4:
 			listarPessoa();
 			printf("Total de pessoas: %d", *r);
 			goto Inicio;
-			printf("");
+			pBuffer=pBuffer;
 		break;
 		case 5:
 			Sair();
 		break;
 		default:
 			goto Inicio;
-			printf("");
+			pBuffer=pBuffer;
         break;
 	}
 }
