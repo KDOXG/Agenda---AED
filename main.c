@@ -91,7 +91,7 @@ void apagarPessoa()
 			if (strcmp(alguem->nome,pessoa->nome) == 0)
 			{
 				pessoa->identidade=999;
-				InsertionSort();	//inserir aquele algoritmo que é mais rápido para chamadas já quase ordenadas
+				InsertionSort();
 				printf("Excluído com sucesso!\n");
 				*r=*r-1;
 				return;
@@ -173,7 +173,7 @@ void main()
 			incluirPessoa();
 			Organizar(&p,&q,&r,&s,&t);
 			if (*r > 1)
-				InsertionSort();	//inserir aquele algoritmo que é mais rápido para chamadas já quase ordenadas
+				InsertionSort();
 			printf("Pessoa incluída! Use o 'Buscar' para ver seu código de identificação.\n");
 			goto Inicio;
 			pBuffer=pBuffer;
