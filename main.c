@@ -82,24 +82,29 @@ void SelectSort ()
     	(pessoa+*min_id)->identidade = *tmp; 
 	}
 }
-/*
-void BubbleSort (int data[])
+
+void BubbleSort ()
 {
-	int tmp,i,j,n; 
-	for (i=0; i<n-1; i++)
+	int *tmp=pBuffer+0*sizeof(int), *i=pBuffer+4*sizeof(int), *j=pBuffer+5*sizeof(int), *n=pBuffer+3*sizeof(int);
+	Pessoa *pessoa=pBuffer+7*sizeof(int);
+	Pessoa *aux=pessoa+*n;
+	for (*i=0; *i<*n-1; *i=*i+1)
 	{
-		for (j=0; j<n-i-1; j++)
+		for (*j=0; *j<*n-*i-1; *j=*j+1)
 		{
-			if (data[j] > data[j+1])
+			if ((pessoa+*j)->identidade > (pessoa+*j+1)->identidade)
 			{
-				tmp = data[j]; 
-				data[j] = data[j+1]; 
-				data[j+1] = tmp; 
+				strcpy(aux->nome,(pessoa+*j)->nome);
+				*tmp = (pessoa+*j)->identidade;
+				strcpy((pessoa+*j)->nome,(pessoa+*j+1)->nome);
+				(pessoa+*j)->identidade = (pessoa+*j+1)->identidade;
+				strcpy((pessoa+*j+1)->nome,aux->nome);
+				(pessoa+*j+1)->identidade = *tmp; 
 			}
 		}
 	}
 }
-
+/*
 void Quicksort (int data[],int left,int right)
 {
    int mid,tmp,i,j;
@@ -212,7 +217,7 @@ void apagarPessoa()
 			if (strcmp(alguem->nome,pessoa->nome) == 0)
 			{
 				pessoa->identidade=999;
-				SelectSort();
+				BubbleSort();
 				printf("Excluído com sucesso!\n");
 				*r=*r-1;
 				return;
@@ -295,7 +300,7 @@ void main()
 			incluirPessoa();
 			Organizar(&p,&u,&q,&r,&s,&t,&v);
 			if (*r > 1)
-				SelectSort();
+				BubbleSort();
 			printf("Pessoa incluída!\n");
 			goto Inicio;
 			pBuffer=pBuffer;
