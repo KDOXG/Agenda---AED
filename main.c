@@ -11,8 +11,9 @@
  * pBuffer+3*sizeof(int) = quantidade de nomes cadastrados na agenda
  * pBuffer+4*sizeof(int) = variável de índice para laços de repetição
  * pBuffer+5*sizeof(int) = segunda variável de índice para laços de repetição
- * pBuffer+6*sizeof(int) = começo dos dados da agenda
- * */
+ * pBuffer+6*sizeof(int) = variável auxiliar de índice para laços de repetição
+ * pBuffer+7*sizeof(int) = começo dos dados da agenda
+ **/
 
 //------------------------------Variáveis e Tipos
 typedef struct P
@@ -24,7 +25,7 @@ typedef struct P
 void *pBuffer;
 
 //------------------------------Funções
-void Organizar(int **p, int **q, int **r, int **s, int **t, int **u)
+void Organizar(int **p, int **q, int **r, int **s, int **t, int **u, int **v)
 {
 	*p=pBuffer+0;
 	*q=pBuffer+sizeof(int);
@@ -32,12 +33,13 @@ void Organizar(int **p, int **q, int **r, int **s, int **t, int **u)
 	*s=pBuffer+3*sizeof(int);
 	*t=pBuffer+4*sizeof(int);
 	*u=pBuffer+5*sizeof(int);
+	*v=pBuffer+6*sizeof(int);
 }
 
 void InsertionSort()
 {
     int *tmp=pBuffer+0*sizeof(int),*i=pBuffer+4*sizeof(int),*j=pBuffer+5*sizeof(int), *n=pBuffer+3*sizeof(int);
-    Pessoa *pessoa=pBuffer+6*sizeof(int);
+    Pessoa *pessoa=pBuffer+7*sizeof(int);
 	Pessoa *aux=pessoa+*n;
 
     for (*j=1; *j<*n; *j=*j+1)
@@ -52,28 +54,35 @@ void InsertionSort()
             *i=*i-1;
         }
         strcpy((pessoa+*i+1)->nome,aux->nome);
-    (pessoa+*i+1)->identidade = *tmp;
+    	(pessoa+*i+1)->identidade = *tmp;
     }
 }
 
-void SelectSort (int data[])
+void SelectSort ()
 {
-   	int min,tmp,i,j,min_id,n;
-   	for (i=0; i<n-1; i++)
+   	int *min=pBuffer+1*sizeof(int), *tmp=pBuffer+0*sizeof(int), *i=pBuffer+4*sizeof(int), *j=pBuffer+5*sizeof(int), *min_id=pBuffer+6*sizeof(int), *n=pBuffer+3*sizeof(int);
+   	Pessoa *pessoa=pBuffer+7*sizeof(int);
+	Pessoa *aux=pessoa+*n;
+	
+	for (*i=0; *i<*n-1; *i=*i+1)
 	{
-    	min = data[i]; 
-    	for (j=i+1; j<n; j++) 
-			if (data[j] < min)
-			{ 
-				min = data[j]; 
-				min_id = j; 
+		*min_id = *i;
+    	*min = (pessoa+*i)->identidade;
+    	for (*j=*i+1; *j<*n; *j=*j+1) 
+			if ((pessoa+*j)->identidade < *min)
+			{
+				*min = (pessoa+*j)->identidade; 
+				*min_id = *j; 
 			}
-    	tmp = data[i]; 
-    	data[i] = data[min_id]; 
-    	data[min_id] = tmp; 
+		strcpy(aux->nome,(pessoa+*i)->nome);
+    	*tmp = (pessoa+*i)->identidade;
+		strcpy((pessoa+*i)->nome,(pessoa+*min_id)->nome);
+    	(pessoa+*i)->identidade = (pessoa+*min_id)->identidade; 
+		strcpy((pessoa+*min_id)->nome,aux->nome);
+    	(pessoa+*min_id)->identidade = *tmp; 
 	}
 }
-
+/*
 void BubbleSort (int data[])
 {
 	int tmp,i,j,n; 
@@ -114,7 +123,7 @@ void Quicksort (int data[],int left,int right)
    if (i < right) Quicksort(data,i,right);
 }
 
-void merge(int vetor[], int comeco, int meio, int fim)		#
+void Merge(int vetor[], int comeco, int meio, int fim)
 {
     int com1 = comeco, com2 = meio+1, comAux = 0, tam = fim-comeco+1;
     int *vetAux;
@@ -155,7 +164,7 @@ void merge(int vetor[], int comeco, int meio, int fim)		#
     free(vetAux);
 }
 
-void mergeSort(int vetor[], int comeco, int fim)
+void MergeSort(int vetor[], int comeco, int fim)
 {
     if (comeco < fim)
 	{
@@ -166,12 +175,12 @@ void mergeSort(int vetor[], int comeco, int fim)
         merge(vetor, comeco, meio, fim);
     }
 }
-
+*/
 //------------------------------Métodos
 void incluirPessoa()
 {
     int *q=pBuffer+2*sizeof(int), *r=pBuffer+3*sizeof(int);
-    Pessoa *pessoa=pBuffer+sizeof(int)*6;
+    Pessoa *pessoa=pBuffer+7*sizeof(int);
     pessoa=pessoa+*r;
 
 	printf("Digite o nome: ");
@@ -180,21 +189,21 @@ void incluirPessoa()
 	pessoa->identidade=(int)*pessoa->nome;
 
     *r=*r+1;
-    *q=(*r+1)*sizeof(Pessoa)+6*sizeof(int);
+    *q=(*r+1)*sizeof(Pessoa)+7*sizeof(int);
     pBuffer=realloc(pBuffer,*q);
 }
 
 void apagarPessoa()
 {
 	int *i=pBuffer+4*sizeof(int), *r=pBuffer+3*sizeof(int);
-	Pessoa *pessoa=pBuffer+6;
+	Pessoa *pessoa=pBuffer+7;
 	Pessoa *alguem=pessoa+*r;
 	printf("Digite o nome: ");
 	getchar();
 	fgets(alguem->nome, 30, stdin);
 	for (*i=0; *i<=*r; (*i)++)
 	{
-		pessoa=pBuffer+6*sizeof(int);
+		pessoa=pBuffer+7*sizeof(int);
 		if (*i == *r)
 			printf("Não há ninguém com este nome.\n");
 		else
@@ -203,7 +212,7 @@ void apagarPessoa()
 			if (strcmp(alguem->nome,pessoa->nome) == 0)
 			{
 				pessoa->identidade=999;
-				InsertionSort();
+				SelectSort();
 				printf("Excluído com sucesso!\n");
 				*r=*r-1;
 				return;
@@ -215,14 +224,14 @@ void apagarPessoa()
 void buscarPessoa()
 {
 	int *i=pBuffer+4*sizeof(int), *r=pBuffer+3*sizeof(int);
-	Pessoa *pessoa=pBuffer+6;
+	Pessoa *pessoa=pBuffer+7*sizeof(int);
 	Pessoa *alguem=pessoa+*r;
 	printf("Digite o nome: ");
 	getchar();
 	fgets(alguem->nome, 30, stdin);
 	for (*i=0; *i<=*r; (*i)++)
 	{
-		pessoa=pBuffer+6*sizeof(int);
+		pessoa=pBuffer+7*sizeof(int);
 		if (*i == *r)
 			printf("Não há ninguém com este nome.\n");
 		else
@@ -244,7 +253,7 @@ void listarPessoa()
 	Pessoa *pessoa;
 	for (*i=0; *i<=*r; (*i)++)
 	{
-		pessoa=pBuffer+6*sizeof(int);
+		pessoa=pBuffer+7*sizeof(int);
 		if (*i == *r)
 			break;
 		else
@@ -266,9 +275,9 @@ void Sair()
 void main()
 {
 	printf("Bem-vindo a Agenda de KDOXG. \nCarregando...");
-	int *p, *q, *r, *s, *t, *u;
-    pBuffer=malloc(sizeof(int)*6+sizeof(Pessoa));
-	Organizar(&p,&q,&r,&s,&t,&u);
+	int *p, *q, *r, *s, *t, *u, *v;
+    pBuffer=malloc(sizeof(int)*7+sizeof(Pessoa));
+	Organizar(&p,&u,&q,&r,&s,&t,&v);
 	*p=0;
 	*q=0;
 	*r=0;
@@ -276,24 +285,24 @@ void main()
 
 	printf("\n------------------------------");
 	printf("\n\nDigite sua escolha...\n1 para incluir...\n2 para excluir...\n3 para buscar...\n4 para listar...\n5 para sair...\nCaso escolha outro valor, nada acontecerá");
-	Inicio: Organizar(&p,&q,&r,&s,&t,&u);
+	Inicio: Organizar(&p,&u,&q,&r,&s,&t,&v);
 	printf("\n\nDigite: ");
-	scanf("%d", q);
+	scanf("%d", s);
 
-	switch (*q)
+	switch (*s)
 	{
 		case 1:
 			incluirPessoa();
-			Organizar(&p,&q,&r,&s,&t,&u);
+			Organizar(&p,&u,&q,&r,&s,&t,&v);
 			if (*r > 1)
-				InsertionSort();
-			printf("Pessoa incluída! Use o 'Buscar' para ver seu código de identificação.\n");
+				SelectSort();
+			printf("Pessoa incluída!\n");
 			goto Inicio;
 			pBuffer=pBuffer;
 		break;
 		case 2:
 			apagarPessoa();
-    		*q=(*r+1)*sizeof(Pessoa)+6*sizeof(int);
+    		*q=(*r+1)*sizeof(Pessoa)+7*sizeof(int);
     		pBuffer=realloc(pBuffer,*q);
 			goto Inicio;
 			pBuffer=pBuffer;
@@ -303,7 +312,6 @@ void main()
 			goto Inicio;
 			pBuffer=pBuffer;
 		break;
-			pessoa=pessoa+*i;
 		case 4:
 			listarPessoa();
 			printf("Total de pessoas: %d", *r);
