@@ -105,36 +105,34 @@ void BubbleSort ()
 	}
 }
 
-void QuickSort (int *left,int *right)
-{	//Passar como parâmetro (&pessoa->identidade,&(pessoa+*r-1)->identidade)
-	int *mid=pBuffer+0,*tmp=pBuffer+sizeof(int),*i=pBuffer+4*sizeof(int),*j=pBuffer+5*sizeof(int);
+void QuickSort (int left,int right)
+{
+	int *mid=pBuffer+0,*tmp=pBuffer+sizeof(int),i=left ,j=right;
 	Pessoa *pessoa=pBuffer+7*sizeof(int);
-	Pessoa *aux=pessoa+*right;
-	*i = *left;
-	*j = *right;
-	*mid = (pessoa+((*left + *right)/2))->identidade;
+	Pessoa *aux=pessoa+right+1;
+	*mid = (pessoa+((left + right)/2))->identidade;		//Maldito pivô! Tenho certeza que meu código está quebrado por causa dele
 	do
 	{
-		while((pessoa+*i)->identidade < *mid)
-			*i=*i+1;
-       	while(*mid < (pessoa+*j)->identidade)
-           	*j=*j-1;
-       	if (i <= j)
+		while((pessoa+i)->identidade < *mid)
+			i++;
+       	while(*mid < (pessoa+j)->identidade)
+           	j--;
+       	if (i < j)
 		{
-			strcpy(aux->nome,(pessoa+*i)->nome);
-           	*tmp = (pessoa+*i)->identidade;
-			strcpy((pessoa+*i)->nome, (pessoa+*j)->nome);
-           	(pessoa+*i)->identidade = (pessoa+*j)->identidade;
-			strcpy((pessoa+*i)->nome,aux->nome);
-           	(pessoa+*j)->identidade = *tmp;
-           	*i=*i+1;
-           	*j=*j-1;
+			strcpy(aux->nome,(pessoa+i)->nome);
+           	*tmp = (pessoa+i)->identidade;
+			strcpy((pessoa+i)->nome, (pessoa+j)->nome);
+           	(pessoa+i)->identidade = (pessoa+j)->identidade;
+			strcpy((pessoa+j)->nome,aux->nome);
+           	(pessoa+j)->identidade = *tmp;
+           	i++;
+           	j--;
        	}
-	}while (*i <= *j);
-	if (*left < *j)
-		Quicksort(left,j);
-	if (*i < *right)
-		Quicksort(i,right);
+	}while (i < j);
+	if (left < j)		//Também preciso checar mais a fundo a partir daqui com o debugger.
+		QuickSort(left,j);
+	if (i < right)
+		QuickSort(i,right);
 }
 /*
 void Merge(int vetor[], int comeco, int meio, int fim)
@@ -210,7 +208,7 @@ void incluirPessoa()
 void apagarPessoa()
 {
 	int *i=pBuffer+4*sizeof(int), *r=pBuffer+3*sizeof(int);
-	Pessoa *pessoa=pBuffer+7;
+	Pessoa *pessoa=pBuffer+7*sizeof(int);
 	Pessoa *alguem=pessoa+*r;
 	printf("Digite o nome: ");
 	getchar();
@@ -226,7 +224,7 @@ void apagarPessoa()
 			if (strcmp(alguem->nome,pessoa->nome) == 0)
 			{
 				pessoa->identidade=999;
-				BubbleSort();
+				QuickSort(0,*r-1);;
 				printf("Excluído com sucesso!\n");
 				*r=*r-1;
 				return;
@@ -310,10 +308,7 @@ void main()
 			incluirPessoa();
 			Organizar(&p,&u,&q,&r,&s,&t,&v);
 			if (*r > 1)
-			{
-				pessoa=pBuffer+7*sizeof(int);
-				QuickSort(&pessoa->identidade,&(pessoa+*r-1)->identidade);
-			}
+				QuickSort(0,*r-1);
 			printf("Pessoa incluída!\n");
 			goto Inicio;
 			pBuffer=pBuffer;
