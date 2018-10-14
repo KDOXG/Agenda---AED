@@ -38,7 +38,7 @@ void Organizar(int **p, int **q, int **r, int **s, int **t, int **u, int **v)
 
 void InsertionSort()
 {
-    int *tmp=pBuffer+0*sizeof(int),*i=pBuffer+4*sizeof(int),*j=pBuffer+5*sizeof(int), *n=pBuffer+3*sizeof(int);
+    int *tmp=pBuffer+0,*i=pBuffer+4*sizeof(int),*j=pBuffer+5*sizeof(int), *n=pBuffer+3*sizeof(int);
     Pessoa *pessoa=pBuffer+7*sizeof(int);
 	Pessoa *aux=pessoa+*n;
 
@@ -60,7 +60,7 @@ void InsertionSort()
 
 void SelectSort ()
 {
-   	int *min=pBuffer+1*sizeof(int), *tmp=pBuffer+0*sizeof(int), *i=pBuffer+4*sizeof(int), *j=pBuffer+5*sizeof(int), *min_id=pBuffer+6*sizeof(int), *n=pBuffer+3*sizeof(int);
+   	int *min=pBuffer+sizeof(int), *tmp=pBuffer+0, *i=pBuffer+4*sizeof(int), *j=pBuffer+5*sizeof(int), *min_id=pBuffer+6*sizeof(int), *n=pBuffer+3*sizeof(int);
    	Pessoa *pessoa=pBuffer+7*sizeof(int);
 	Pessoa *aux=pessoa+*n;
 	
@@ -85,7 +85,7 @@ void SelectSort ()
 
 void BubbleSort ()
 {
-	int *tmp=pBuffer+0*sizeof(int), *i=pBuffer+4*sizeof(int), *j=pBuffer+5*sizeof(int), *n=pBuffer+3*sizeof(int);
+	int *tmp=pBuffer+0, *i=pBuffer+4*sizeof(int), *j=pBuffer+5*sizeof(int), *n=pBuffer+3*sizeof(int);
 	Pessoa *pessoa=pBuffer+7*sizeof(int);
 	Pessoa *aux=pessoa+*n;
 	for (*i=0; *i<*n-1; *i=*i+1)
@@ -104,30 +104,39 @@ void BubbleSort ()
 		}
 	}
 }
-/*
-void Quicksort (int data[],int left,int right)
-{
-   int mid,tmp,i,j;
-   i = left;
-   j = right;
-   mid = data[(left + right)/2];
-   do {
-        while(data[i] < mid)
-           i++;
-       while(mid < data[j])
-           j--;
-       if (i <= j) {
-           tmp = data[i];
-           data[i] = data[j];
-           data[j] = tmp;
-           i++;
-           j--;
-       }
-   } while (i <= j);
-   if (left < j) Quicksort(data,left,j);
-   if (i < right) Quicksort(data,i,right);
-}
 
+void QuickSort (int *left,int *right)
+{	//Passar como parâmetro (&pessoa->identidade,&(pessoa+*r-1)->identidade)
+	int *mid=pBuffer+0,*tmp=pBuffer+sizeof(int),*i=pBuffer+4*sizeof(int),*j=pBuffer+5*sizeof(int);
+	Pessoa *pessoa=pBuffer+7*sizeof(int);
+	Pessoa *aux=pessoa+*right;
+	*i = *left;
+	*j = *right;
+	*mid = (pessoa+((*left + *right)/2))->identidade;
+	do
+	{
+		while((pessoa+*i)->identidade < *mid)
+			*i=*i+1;
+       	while(*mid < (pessoa+*j)->identidade)
+           	*j=*j-1;
+       	if (i <= j)
+		{
+			strcpy(aux->nome,(pessoa+*i)->nome);
+           	*tmp = (pessoa+*i)->identidade;
+			strcpy((pessoa+*i)->nome, (pessoa+*j)->nome);
+           	(pessoa+*i)->identidade = (pessoa+*j)->identidade;
+			strcpy((pessoa+*i)->nome,aux->nome);
+           	(pessoa+*j)->identidade = *tmp;
+           	*i=*i+1;
+           	*j=*j-1;
+       	}
+	}while (*i <= *j);
+	if (*left < *j)
+		Quicksort(left,j);
+	if (*i < *right)
+		Quicksort(i,right);
+}
+/*
 void Merge(int vetor[], int comeco, int meio, int fim)
 {
     int com1 = comeco, com2 = meio+1, comAux = 0, tam = fim-comeco+1;
@@ -282,6 +291,7 @@ void main()
 	printf("Bem-vindo a Agenda de KDOXG. \nCarregando...");
 	int *p, *q, *r, *s, *t, *u, *v;
     pBuffer=malloc(sizeof(int)*7+sizeof(Pessoa));
+	Pessoa *pessoa = pBuffer+7*sizeof(int);
 	Organizar(&p,&u,&q,&r,&s,&t,&v);
 	*p=0;
 	*q=0;
@@ -300,7 +310,10 @@ void main()
 			incluirPessoa();
 			Organizar(&p,&u,&q,&r,&s,&t,&v);
 			if (*r > 1)
-				BubbleSort();
+			{
+				pessoa=pBuffer+7*sizeof(int);
+				QuickSort(&pessoa->identidade,&(pessoa+*r-1)->identidade);
+			}
 			printf("Pessoa incluída!\n");
 			goto Inicio;
 			pBuffer=pBuffer;
