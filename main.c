@@ -130,9 +130,9 @@ void QuickSort (int left,int right)
        	}
 	}while (i < j);
 	if (left < j)		//Também preciso checar mais a fundo a partir daqui com o debugger.
-		QuickSort(left,j);
+		QuickSort(left,j-1);
 	if (i < right)
-		QuickSort(i,right);
+		QuickSort(i+1,right);
 }
 /*
 void Merge(int vetor[], int comeco, int meio, int fim)
