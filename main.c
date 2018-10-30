@@ -190,7 +190,6 @@ void main()
 			goto Inicio;
 			pBuffer=pBuffer;
 		break;
-			pessoa=pessoa+*i;
 		case 4:
 			listarPessoa();
 			printf("Total de pessoas: %d", *r);
