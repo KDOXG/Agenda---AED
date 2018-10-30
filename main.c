@@ -130,17 +130,12 @@ void listarPessoa()
 {
 	int *i=pBuffer+3*sizeof(int), *r=pBuffer+2*sizeof(int);
 	Pessoa *pessoa;
-	for (*i=0; *i<=*r; (*i)++)
+	for (*i=*r-1; *i>=0; (*i)--)
 	{
 		pessoa=pBuffer+5*sizeof(int);
-		if (*i == *r)
-			break;
-		else
-		{
-			pessoa=pessoa+*i;
-			printf("%s", pessoa->nome);
-			printf("Código de identificação: %d\n", pessoa->identidade);
-		}
+		pessoa=pessoa+*i;
+		printf("%s", pessoa->nome);
+		printf("Código de identificação: %d\n", pessoa->identidade);
 	}
 }
 
@@ -171,17 +166,16 @@ void main()
 	{
 		case 1:
 			incluirPessoa();
-			Organizar(&p,&q,&r,&s,&t);
-			if (*r > 1)
-				InsertionSort();
 			printf("Pessoa incluída! Use o 'Buscar' para ver seu código de identificação.\n");
 			goto Inicio;
 			pBuffer=pBuffer;
 		break;
 		case 2:
-			apagarPessoa();
+			/*apagarPessoa();   Não me parece necessário chamar a função.   */
+			*r=*r-1;
     		*q=(*r+1)*sizeof(Pessoa)+5*sizeof(int);
     		pBuffer=realloc(pBuffer,*q);
+    		printf("Excluído com sucesso!\n");
 			goto Inicio;
 			pBuffer=pBuffer;
 		break;
@@ -190,7 +184,6 @@ void main()
 			goto Inicio;
 			pBuffer=pBuffer;
 		break;
-			pessoa=pessoa+*i;
 		case 4:
 			listarPessoa();
 			printf("Total de pessoas: %d", *r);
