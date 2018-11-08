@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <locale.h>
 
+
 /**	Índices do buffer virtual:
  * pBuffer+0 = variável de auxílio
  * pBuffer+sizeof(int) = tamanho do buffer
@@ -16,7 +17,7 @@
 //------------------------------Variáveis e Tipos
 typedef struct P
 {
-	char nome[30];
+	char nome[28];
 	int identidade;
 }Pessoa;
 
@@ -64,8 +65,8 @@ void incluirPessoa()
 
 	printf("Digite o nome: ");
 	getchar();
-    fgets(pessoa->nome, 30, stdin);
-	pessoa->identidade=(int)*pessoa->nome;
+    fgets(pessoa->nome, 28, stdin);
+	pessoa->identidade=0;
 
     *r=*r+1;
     *q=(*r+1)*sizeof(Pessoa)+5*sizeof(int);
@@ -76,28 +77,11 @@ void apagarPessoa()
 {
 	int *i=pBuffer+3*sizeof(int), *r=pBuffer+2*sizeof(int);
 	Pessoa *pessoa=pBuffer+5;
-	Pessoa *alguem=pessoa+*r;
-	printf("Digite o nome: ");
-	getchar();
-	fgets(alguem->nome, 30, stdin);
-	for (*i=0; *i<=*r; (*i)++)
-	{
-		pessoa=pBuffer+5*sizeof(int);
-		if (*i == *r)
-			printf("Não há ninguém com este nome.\n");
-		else
-        {
-			pessoa=pessoa+*i;
-			if (strcmp(alguem->nome,pessoa->nome) == 0)
-			{
-				pessoa->identidade=999;
-				InsertionSort();
-				printf("Excluído com sucesso!\n");
-				*r=*r-1;
-				return;
-			}
-        }
-	}
+	pessoa->identidade=999;
+	InsertionSort();
+	printf("Excluído com sucesso!\n");
+	*r=*r-1;
+	return;
 }
 
 void buscarPessoa()
@@ -107,7 +91,7 @@ void buscarPessoa()
 	Pessoa *alguem=pessoa+*r;
 	printf("Digite o nome: ");
 	getchar();
-	fgets(alguem->nome, 30, stdin);
+	fgets(alguem->nome, 28, stdin);
 	for (*i=0; *i<=*r; (*i)++)
 	{
 		pessoa=pBuffer+5*sizeof(int);
@@ -130,7 +114,7 @@ void listarPessoa()
 {
 	int *i=pBuffer+3*sizeof(int), *r=pBuffer+2*sizeof(int);
 	Pessoa *pessoa;
-	for (*i=*r-1; *i>=0; (*i)--)
+	for (*i=0; *i<*r; (*i)++)
 	{
 		pessoa=pBuffer+5*sizeof(int);
 		pessoa=pessoa+*i;
@@ -171,8 +155,7 @@ void main()
 			pBuffer=pBuffer;
 		break;
 		case 2:
-			/*apagarPessoa();   Não me parece necessário chamar a função.   */
-			*r=*r-1;
+			apagarPessoa();
     		*q=(*r+1)*sizeof(Pessoa)+5*sizeof(int);
     		pBuffer=realloc(pBuffer,*q);
     		printf("Excluído com sucesso!\n");
