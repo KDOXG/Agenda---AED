@@ -82,13 +82,24 @@ nop
 j menu
 nop
 
-Organizar: lw $t1, Buffer+0
-lw $t2, Buffer+4
-lw $t3, Buffer+8
-lw $t4, Buffer+12
-lw $t5, Buffer+16
-jr $ra
-nop
+Organizar:
+#addi $sp $sp -4
+#sw $ra 0($sp)
+#addi $sp $sp -4
+#sw $s0 0($sp)
+
+#lw $t1, Buffer+0
+#lw $t2, Buffer+4
+#lw $t3, Buffer+8
+#lw $t4, Buffer+12
+#lw $t5, Buffer+16
+
+#lw $s0 0($sp)
+#addi $sp $sp 4
+#lw $ra 0($sp)
+#addi $sp $sp 4
+#jr $ra
+#nop
 
 incluirPessoa: jal Organizar
 nop
