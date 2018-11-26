@@ -1,11 +1,11 @@
-.data
+.data		#Disclaimer: sera mais facil se eu fizer usando uma estrutura guiada por ponteiros (lista encadeada)
 	extra0: .asciiz "Isto e uma mensagem de enfase(enfase?)"
 	extra1: .asciiz "Assembly <3"
 	extra2: .asciiz "Saudades professor Guilherme ;-;"
 	extra3: .asciiz "Joguem Touhou. E uma ordem."
 	extra4: .asciiz "Existe tres tipos de programacao: programacao para embarcados, programacao para sistemas e programacao para as provas do Marilton."
 	extra5: .asciiz "Entenderam, todo mundo entendeu? Entenderam, sim ou nao?"
-	extra6: .asciiz "Imagina se o primeiro cliente do RU do Anglo é a agenda do pBuffer, so que pronta."
+	extra6: .asciiz "Imagina se o primeiro cliente do RU do Anglo Ã© a agenda do pBuffer, so que pronta."
 	extra7: .asciiz "Imagina um marmanjo falando 'Fredericoo~' ou 'Vivii~'. Imaginou?"
 	extra8: .asciiz "Ir a pe para o Anglo nem e tao ruim!"
 	extra9: .asciiz "Todos os dias depois da aula agora eu irei pra Cotada/CEng, e muito gostoso estudar la s2"
@@ -48,6 +48,7 @@ syscall
 
 #--------------------------------------
 #colocar as funcoes graficas aqui
+#referenciar para 0x10040000
 #--------------------------------------
 
 jal Organizar
