@@ -118,18 +118,17 @@ syscall
 #Necessita de um algoritmo de ordenacao
 
 buscarPessoa:
-la $t9, Buffer+20($t3)
 li $v0, 4
 la $a0, digitarnome
 syscall
 li $v0, 8
 move $a0, $t9
-li $a1, 32
+li $a1, 31
 syscall
 #Necessita de um algoritmo de busca em assembly
 #Necessita de um algoritmo de exibicao
 
 listarPessoas:
-#Necessita de um algoritmo de exibicao em loop
+#Necessita de um algoritmo de busca e de exibicao em loop
 
 Sair: #Dar um jeito de dar um free() no Buffer
