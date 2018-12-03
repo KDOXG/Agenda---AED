@@ -1,5 +1,5 @@
 .data		#Disclaimer: sera mais facil se eu fizer usando uma estrutura guiada por ponteiros (lista encadeada)
-	#UPDATE: Chamar as frases extras via operaÃ§Ãµes com arquivos
+	#UPDATE: Chamar as frases extras via operações com arquivos
 	welcome: .asciiz "Seja bem-vindo a agenda de KDOXG! Carregando..."
 	escolha1: .asciiz "\n1: Adicionar pessoa,\n"
 	escolha2: .asciiz "2: Remover pessoa,\n"
@@ -27,8 +27,8 @@ syscall
 
 #--------------------------------------
 #colocar as funcoes graficas aqui
-#referenciar para 0x10040000
-#UPDATE: Chamar a imagem via operaÃ§Ãµes com arquivos
+#referenciar para 0xffff0000
+#UPDATE: Chamar a imagem via operações com arquivos
 #--------------------------------------
 
 la $t9, Buffer
@@ -107,13 +107,12 @@ j menu
 nop
 
 apagarPessoa:
-la $t9, Buffer+20($t3)
 li $v0, 4
 la $a0, digitarnome
 syscall
 li $v0, 8
 move $a0, $t9
-li $a1, 32
+li $a1, 31
 syscall
 #Necessita de um algoritmo de busca em assembly
 #Necessita de um algoritmo de ordenacao
