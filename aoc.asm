@@ -15,7 +15,6 @@
 	Buffer: .space 39
 	
 .text
-#InsertionSort:
 #apagarPessoa:
 #buscarPessoa:
 #listarPessoas:
@@ -29,6 +28,8 @@ syscall
 #colocar as funcoes graficas aqui
 #referenciar para 0xffff0000
 #UPDATE: Chamar a imagem via operações com arquivos
+#UPDATE@: Nao tera imagens nem algoritmo de ordenacao
+#Nao havera tempo de implementar.
 #--------------------------------------
 
 la $t9, Buffer
@@ -115,7 +116,6 @@ move $a0, $t9
 li $a1, 31
 syscall
 #Necessita de um algoritmo de busca em assembly
-#Necessita de um algoritmo de ordenacao
 
 buscarPessoa:
 li $v0, 4
