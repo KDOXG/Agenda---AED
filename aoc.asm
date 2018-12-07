@@ -14,7 +14,7 @@
 	lista2: .asciiz "Codigo de identificacao: "
 	lista3: .asciiz "\n\nQuantidade: "
 	fim: .asciiz "Muito obrigado! Guarde seu .txt com cuidado :-) Volte sempre! -KDOXG"
-	Buffer: .space 37
+	Buffer: .space 36
 	
 .text
 #Sair:
@@ -26,13 +26,12 @@ syscall
 #--------------------------------------
 #colocar as funcoes graficas aqui
 #referenciar para 0xffff0000
-#UPDATE: Chamar a imagem via opera??es com arquivos
+#UPDATE: Chamar a imagem via operacoes com arquivos
 #UPDATE@: Nao tera imagens nem algoritmo de ordenacao
 #Nao havera tempo de implementar.
 #--------------------------------------
 
 la $t9, Buffer			#Registrador do endereco para guardar nomes
-addi $t9, $t9, 1
 li $t8, 0				#Registrador de auxilio para enderecos
 li $t1, 0				#Registrador de auxilio (aux1,temp1)
 li $t2, 0				#Segundo registrador de auxilio (aux2,temp2)
@@ -123,7 +122,6 @@ li $a1, 31
 syscall
 #Necessita de um algoritmo de busca em assembly
 la $t8, Buffer
-addi $t8, $t8, 1
 lbu $t1, ($t8)
 lbu $t2, ($t9)
 addi $t6, $t8, 32
@@ -163,7 +161,6 @@ syscall
 #Necessita de um algoritmo de busca em assembly
 #Necessita de um algoritmo de exibicao
 la $t8, Buffer
-addi $t8, $t8, 1
 lbu $t1, ($t8)
 lbu $t2, ($t9)
 
@@ -196,7 +193,6 @@ nop
 listarPessoas:
 #Necessita de um algoritmo de busca e de exibicao em loop
 la $t8, Buffer
-addi $t8, $t8, 1
 
 For_lista:
 jal Imprimir
