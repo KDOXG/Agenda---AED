@@ -10,11 +10,11 @@
 	finalizado1: .asciiz "Pessoa adicionada!\n"
 	finalizado2: .asciiz "Pessoa removida!\n"
 	finalizado3: .asciiz "Pessoa nao encontrada.\n"
-	lista1: .asciiz "Nome: "
-	lista2: .asciiz "\nCodigo de identificacao: "
-	lista3: .asciiz "\nQuantidade: "
+	lista1: .asciiz "\nNome: "
+	lista2: .asciiz "Codigo de identificacao: "
+	lista3: .asciiz "\n\nQuantidade: "
 	fim: .asciiz "Muito obrigado! Guarde seu .txt com cuidado :-) Volte sempre! -KDOXG"
-	Buffer: .space 39
+	Buffer: .space 37
 	
 .text
 #Sair:
@@ -32,7 +32,7 @@ syscall
 #--------------------------------------
 
 la $t9, Buffer			#Registrador do endereco para guardar nomes
-addi $t9, $t9, 3
+addi $t9, $t9, 1
 li $t8, 0				#Registrador de auxilio para enderecos
 li $t1, 0				#Registrador de auxilio (aux1,temp1)
 li $t2, 0				#Segundo registrador de auxilio (aux2,temp2)
@@ -41,6 +41,7 @@ li $t4, 0				#Registrador de indice para la?os de repeticao
 li $t5, 0				#Registrador geral 1
 li $t6, 0				#Registrador geral 2
 
+menu:
 li $v0, 4
 la $a0, escolha1
 syscall
@@ -53,7 +54,7 @@ syscall
 la $a0, escolha5
 syscall
 
-menu: li $v0, 5
+li $v0, 5
 syscall
 move $t0, $v0
 beq $t0, 1, incluirPessoa
@@ -122,7 +123,7 @@ li $a1, 31
 syscall
 #Necessita de um algoritmo de busca em assembly
 la $t8, Buffer
-addi $t8, $t8, 3
+addi $t8, $t8, 1
 lbu $t1, ($t8)
 lbu $t2, ($t9)
 addi $t6, $t8, 32
@@ -162,7 +163,7 @@ syscall
 #Necessita de um algoritmo de busca em assembly
 #Necessita de um algoritmo de exibicao
 la $t8, Buffer
-addi $t8, $t8, 3
+addi $t8, $t8, 1
 lbu $t1, ($t8)
 lbu $t2, ($t9)
 
@@ -195,7 +196,7 @@ nop
 listarPessoas:
 #Necessita de um algoritmo de busca e de exibicao em loop
 la $t8, Buffer
-addi $t8, $t8, 3
+addi $t8, $t8, 1
 
 For_lista:
 jal Imprimir
@@ -205,8 +206,8 @@ addi $t8, $t8, 32
 lw $t8, ($t8)
 beq $t8, $t9, Fim_lista
 nop
-lbu $t1, ($t8)
-j For_busca
+#lbu $t1, ($t8)
+j For_lista
 nop
 
 Fim_lista:
@@ -228,7 +229,7 @@ syscall
 la $a0, lista2
 syscall
 li $v0, 1
-lw $a0, 31($t8)
+lbu $a0, 31($t8)
 syscall
 jr $ra
 nop
@@ -236,4 +237,6 @@ nop
 Sair: #Dar um jeito de dar um free() no Buffer
 la $a0, fim
 li $v0, 4
+syscall
+li $v0, 10
 syscall
