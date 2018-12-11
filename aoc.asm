@@ -1,5 +1,4 @@
-.data		#Disclaimer: sera mais facil se eu fizer usando uma estrutura guiada por ponteiros (lista encadeada)
-	#UPDATE: Chamar as frases extras via opera??es com arquivos
+.data
 	agenda: .asciiz "agenda.txt"
 	welcome: .asciiz "Seja bem-vindo a agenda de KDOXG! Carregando..."
 	escolha1: .asciiz "\n1: Adicionar pessoa,\n"
@@ -18,19 +17,10 @@
 	Buffer: .space 4
 	
 .text
-#Sair:
 
 la $a0, welcome
 li $v0, 4
 syscall
-
-#--------------------------------------
-#colocar as funcoes graficas aqui
-#referenciar para 0xffff0000
-#UPDATE: Chamar a imagem via operacoes com arquivos
-#UPDATE@: Nao tera imagens nem algoritmo de ordenacao
-#Nao havera tempo de implementar.
-#--------------------------------------
 
 la $t9, Buffer			#Registrador do endereco para guardar nomes
 li $v0, 9
@@ -107,11 +97,10 @@ apagarPessoa:
 	li $a1, 32
 	syscall
 	lw $t8, Buffer
-	lw $t1, ($t8)
+	lw $t6, Buffer					#Aqui, $t6 agira como um ponteiro para o nodo anterior
+	lw $t1, ($t8)					##Ele servira para guardar o ponteiro da posicao a seguir do que sera apagado
 	lw $t2, ($t9)
-	addi $t6, $t8, 32		#Aqui, $t6 agira como um ponteiro para o nodo anterior
-							#Ele servira para guardar o ponteiro da posicao a seguir do que sera apagado
-
+	
 For_apaga:
 	seq $t5, $t1, $t2
 	beq $t5, 1, Apagar
