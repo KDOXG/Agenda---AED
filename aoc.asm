@@ -1,11 +1,7 @@
 .data
 	agenda: .asciiz "agenda.txt"
 	welcome: .asciiz "Seja bem-vindo a agenda de KDOXG! Carregando..."
-	escolha1: .asciiz "\n1: Adicionar pessoa,\n"
-	escolha2: .asciiz "2: Remover pessoa,\n"
-	escolha3: .asciiz "3: Buscar pessoa,\n"
-	escolha4: .asciiz "4: Listar pessoas,\n"
-	escolha5: .asciiz "5: Sair. Digite: "
+	escolha: .asciiz "\n1: Adicionar pessoa,\n2: Remover pessoa,\n3: Buscar pessoa,\n4: Listar pessoas,\n5: Sair. Digite: " 
 	digitarnome: .asciiz "Digite o nome: "
 	finalizado1: .asciiz "Pessoa adicionada!\n"
 	finalizado2: .asciiz "Pessoa removida!\n"
@@ -19,7 +15,8 @@
 .text
 
 la $a0, welcome
-li $v0, 4
+li $a1, 2
+li $v0, 55
 syscall
 
 la $t9, Buffer			#Registrador do endereco para guardar nomes
@@ -37,21 +34,16 @@ li $t5, 0				#Registrador geral 1
 li $t6, 0				#Registrador geral 2
 
 menu:
-	li $v0, 4
-	la $a0, escolha1
+	la $a0, escolha
+	li $v0, 51
 	syscall
-	la $a0, escolha2
-	syscall
-	la $a0, escolha3
-	syscall
-	la $a0, escolha4
-	syscall
-	la $a0, escolha5
-	syscall
-
-	li $v0, 5
-	syscall
-	move $t0, $v0
+	move $t0, $a0
+	beq $a1, -1, menu
+	nop
+	beq $a1, -3, menu
+	nop
+	beq $a1, -2, Sair
+	nop
 	beq $t0, 1, incluirPessoa
 	nop
 	beq $t0, 2, apagarPessoa
@@ -65,13 +57,11 @@ menu:
 	j menu
 	nop
 
-incluirPessoa: 
-	li $v0, 4
+incluirPessoa:
+	li $v0, 54
 	la $a0, digitarnome
-	syscall
-	li $v0, 8
-	move $a0, $t9
-	li $a1, 32
+	move $a1, $t9
+	li $a2, 32
 	syscall
 	addi $t3, $t3, 1
 	addi $t9, $t9, 32
@@ -81,20 +71,19 @@ incluirPessoa:
 	syscall
 	sw $v0, ($t9)			#Guarda o endereco da nova area para a proxima posicao
 	la $t9, ($v0)			#Ideia que veio da lista encadeada
-	li $v0, 4
+	li $v0, 55
 	la $a0, finalizado1
+	li $a1, 1
 	syscall
 	j menu
 	nop
 
 #----------------------------------
 apagarPessoa:
-	li $v0, 4
+	li $v0, 54
 	la $a0, digitarnome
-	syscall
-	li $v0, 8
-	move $a0, $t9
-	li $a1, 32
+	move $a1, $t9
+	li $a2, 32
 	syscall
 	lw $t8, Buffer
 	lw $t6, Buffer					#Aqui, $t6 agira como um ponteiro para o nodo anterior
@@ -120,20 +109,19 @@ Apagar:
 	lw $t8, ($t8)
 	sw $t8, ($t6)
 	addi $t3, $t3, -1
-	li $v0, 4
+	li $v0, 55
 	la $a0, finalizado2
+	li $a1, 1
 	syscall
 	j menu
 	nop
 
 #----------------------------------
 buscarPessoa:
-	li $v0, 4
+	li $v0, 54
 	la $a0, digitarnome
-	syscall
-	li $v0, 8
-	move $a0, $t9
-	li $a1, 32
+	move $a1, $t9
+	li $a2, 32
 	syscall
 	lw $t8, Buffer
 	lw $t1, ($t8)
@@ -159,8 +147,9 @@ Fim_busca:
 	nop
 
 Erro:
-	li $v0, 4
-	la $a0, finalizado3
+	li $v0, 55
+	la $a0, finalizado2
+	li $a1, 0
 	syscall
 	j menu
 	nop
@@ -233,7 +222,8 @@ Encerra:
 	move $a0, $t7
 	syscall
 	la $a0, fim
-	li $v0, 4
+	li $a1, 1
+	li $v0, 55
 	syscall
 	li $v0, 10
 	syscall
